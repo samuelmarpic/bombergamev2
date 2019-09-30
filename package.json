@@ -1,0 +1,19 @@
+{
+  "name": "bombergame",
+  "version": "1.0.0",
+  "description": "Juego multijugador basado en bomberman",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgallud/bombergame.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jgallud/bombergame/issues"
+  },
+  "homepage": "https://github.com/jgallud/bombergame#readme"
+}
