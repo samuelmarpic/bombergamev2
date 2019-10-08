@@ -1,7 +1,7 @@
 
 function Juego(){
-	this.partidas=[];
-	this.usuarios=[];
+	this.partidas={};
+	this.usuarios={};
 
 	this.crearPartida=function(nombre,nick,callback){
 		var idp=nombre+nick;
@@ -9,6 +9,7 @@ function Juego(){
 		if (!this.partidas[idp]){
 			partida=new Partida(nombre,idp);
 			partida.agregarJugador(this.usuarios[nick]);
+			//partida.jugadores[nick]=this.usuarios[nick];
 			this.partidas[idp]=partida;
 		}
 		else{
@@ -23,13 +24,19 @@ function Juego(){
 		}
 		callback(this.usuarios[nombre]);
 	}
-	this.obtenerPartidas=function(){
-		return this.partidas;
+	this.obtenerUsuarios=function(callback){
+		callback(this.usuarios);
+	}
+	this.obtenerPartidas=function(callback){
+		callback(this.partidas);
 	}
 	this.unirAPartida=function(nombre,nick){
+		var partida={};
 		if (this.partidas[nombre] && this.usuarios[nick]){
 			this.partidas[nombre].agregarJugador(this.usuarios[nick]);
+			partida=this.partidas[nombre];
 		}
+		return partida;
 	}
 	this.salir=function(nombrePartida,nick){
 		this.partidas[nombrePartida].salir(nick);
@@ -43,18 +50,28 @@ function Juego(){
 	this.eliminarPartida=function(nombrePartida){
 		delete this.partidas[nombrePartida];
 	}
+	this.obtenerJugadoresPartida=function(nombrePartida,callback){
+		var jugadores={};
+		if (this.partidas[nombrePartida]){
+			jugadores=this.partidas[nombrePartida].obtenerJugadores();
+		}
+		callback(jugadores);
+	}
 }
 
 function Partida(nombre,idp){
 	this.nombre=nombre;
 	this.idp=idp;
-	this.jugadores=[];
+	this.jugadores={};
 	this.fase=new Inicial();
 	this.agregarJugador=function(usr){
 		this.fase.agregarJugador(usr,this);
 	}
 	this.puedeAgregarJugador=function(usr){
 		this.jugadores[usr.nick]=usr;
+	}
+	this.obtenerJugadores=function(){
+		return this.jugadores;
 	}
 	this.salir=function(nick){
 		delete this.jugadores[nick];

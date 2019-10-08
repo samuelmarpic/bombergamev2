@@ -24,9 +24,38 @@ app.get("/agregarUsuario/:nick",function(request,response){
 app.get("/crearPartida/:nombrePartida/:nick",function(request,response){
 	var nick=request.params.nick;
 	var nombrePartida=request.params.nombrePartida;
+	console.log("Usuario "+nick+" crea la partida "+nombrePartida);
 	juego.crearPartida(nombrePartida,nick,function(partida){
 		response.send(partida);
 	});
+});
+
+app.get("/obtenerPartidas",function(request,response){
+	juego.obtenerPartidas(function(partidas){
+		response.send(partidas);
+	})
+});
+
+app.get("/obtenerUsuarios",function(request,response){
+	juego.obtenerUsuarios(function(usuarios){
+		response.send(usuarios);
+	})
+});
+
+app.get("/unirAPartida/:nombrePartida/:nick",function(request,response){
+	var nick=request.params.nick;
+	var nombrePartida=request.params.nombrePartida;
+	console.log("Usuario "+nick+" se une a la partida "+nombrePartida);
+	var partida={};
+	partida=juego.unirAPartida(nombrePartida,nick);
+	response.send(partida);
+});
+
+app.get("/obtenerJugadores/:nombrePartida",function(request,response){
+	var nombrePartida=request.params.nombrePartida;
+	juego.obtenerJugadoresPartida(nombrePartida,function(jugadores){
+		response.send(jugadores);
+	})
 });
 
 console.log("Servidor escuchando en "+host+":"+port);
