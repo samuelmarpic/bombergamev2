@@ -3,17 +3,25 @@ function Juego(){
 	this.partidas=[];
 	this.usuarios=[];
 
-	this.crearPartida=function(nombre,nick){
+	this.crearPartida=function(nombre,nick,callback){
 		var idp=nombre+nick;
+		var partida;
 		if (!this.partidas[idp]){
-			this.partidas[idp]=new Partida(nombre,idp);
-			this.partidas[idp].agregarJugador(this.usuarios[nick]);
+			partida=new Partida(nombre,idp);
+			partida.agregarJugador(this.usuarios[nick]);
+			this.partidas[idp]=partida;
 		}
+		else{
+			partida=this.partidas[idp];
+		}
+		callback(partida);
 	}
-	this.agregarUsuario=function(nombre){
+	this.agregarUsuario=function(nombre,callback){
 		if (!this.usuarios[nombre]){
+			console.log("Nuevo usuario: "+nombre);
 			this.usuarios[nombre]=new Usuario(nombre);
 		}
+		callback(this.usuarios[nombre]);
 	}
 	this.obtenerPartidas=function(){
 		return this.partidas;
@@ -77,3 +85,5 @@ function Final(){
 function Usuario(nick){
 	this.nick=nick;
 }
+
+module.exports.Juego=Juego;

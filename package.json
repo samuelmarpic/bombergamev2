@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jgallud/bombergame/issues"
   },
-  "homepage": "https://github.com/jgallud/bombergame#readme"
+  "homepage": "https://github.com/jgallud/bombergame#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
