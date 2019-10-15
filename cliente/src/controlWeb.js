@@ -57,6 +57,7 @@ function mostrarCrearPartida(nick){
 
 function mostrarPartida(data){
 	$('#mCP').remove();
+	$('#mLP').remove();
 	var cadena="<div id='mP'>";
 	cadena=cadena+"<h3>Bienvenido a la partida: "+data.nombre+"</h3>";
 	$('#inicio').append(cadena);
@@ -65,7 +66,7 @@ function mostrarPartida(data){
 function mostrarListaPartidas(data){
 	$('#mCP').remove();
 	var numeroPartidas=Object.keys(data).length;
-	var cadena="<div id='#mLP'>";
+	var cadena="<div id='mLP'>";
 	cadena=cadena+"<h3>Lista de partidas</h3>";
 	//cadena=cadena+'<ul class="list-group">';
   	cadena=cadena+'<table class="table"><thead><tr>';
@@ -76,9 +77,9 @@ function mostrarListaPartidas(data){
   		cadena=cadena+'<tr>'
   		cadena=cadena+'<td>'+data[key].nombre+'</td>';
   		cadena=cadena+'<td>'+Object.keys(data[key].jugadores).length+'</td>';
- 		cadena=cadena+'<td><button type="button" id="unirmeAPartidaBtn" class="btn btn-primary btn-md" onclick="rest.unirAPartida(\''+data[key].nombre+'\',\''+nick+'\')">Unirse a partida</button></td>';
+ 		cadena=cadena+'<td><button type="button" id="unirmeAPartidaBtn" class="btn btn-primary btn-md" onclick="rest.unirAPartida(\''+data[key].idp+'\',\''+nick+'\')">Unirse a partida</button></td>';
  		cadena=cadena+'</tr>';
   	};
-  	cadena=cadena+"</tbody></table>";
+  	cadena=cadena+"</tbody></table></div>";
   	$('#inicio').append(cadena);
 }
