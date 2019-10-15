@@ -3,13 +3,18 @@ function ClienteRest(){
 	this.agregarUsuario=function(nick){
 		$.getJSON("/agregarUsuario/"+nick,function(data){    
     		console.log(data);
-    		//mostrarUsuario(data);
+    		if (data.nick!=""){
+	    		mostrarUsuario(data);
+	    	}
+	    	else{
+	    		mostrarAviso("Utiliza otro nick");	
+	    	}
 		});
 	}
 	this.crearPartida=function(nombrePartida,nick){
 		$.getJSON("/crearPartida/"+nombrePartida+"/"+nick,function(data){    
     		console.log(data);
-    		//mostrarPartida(data);
+    		mostrarPartida(data);
 		});
 	}
 	this.unirAPartida=function(nombrePartida,nick){
@@ -21,7 +26,7 @@ function ClienteRest(){
 	this.obtenerPartidas=function(){
 		$.getJSON("/obtenerPartidas",function(data){    
     		console.log(data);
-    		//mostrarPartidas(data);
+    		mostrarListaPartidas(data);
 		});
 	}
 	this.obtenerJugadores=function(nombrePartida){
