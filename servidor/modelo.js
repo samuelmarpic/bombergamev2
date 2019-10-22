@@ -33,18 +33,18 @@ function Juego(){
 	this.obtenerPartidas=function(callback){
 		callback(this.partidas);
 	}
-	this.unirAPartida=function(nombre,nick){
+	this.unirAPartida=function(nombre,nick,callback){
 		var partida={};
 		if (this.partidas[nombre] && this.usuarios[nick]){
 			this.partidas[nombre].agregarJugador(this.usuarios[nick]);
 			partida=this.partidas[nombre];
 		}
-		return partida;
+		callback(partida);
 	}
-	this.salir=function(nombrePartida,nick){
-		this.partidas[nombrePartida].salir(nick);
-		if (this.comprobarJugadores(nombrePartida)==0){
-			this.eliminarPartida(nombrePartida);
+	this.salir=function(idp,nick){
+		this.partidas[idp].salir(nick);
+		if (this.comprobarJugadores(idp)==0){
+			this.eliminarPartida(idp);
 		}
 	}
 	this.comprobarJugadores=function(nombrePartida){
