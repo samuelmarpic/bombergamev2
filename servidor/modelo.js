@@ -60,6 +60,22 @@ function Juego(){
 		}
 		callback(jugadores);
 	}
+	this.prepararJugador=function(idp,nick){
+		var jugadores=this.partidas[idp].jugadores;
+		jugadores[nick].preparado=true;
+		this.comprobarPreparados(idp);
+	}
+	this.comprobarPreparados=function(idp){
+		var estanPreparados=true;
+		for(var index in this.jugadores){
+			if(this.jugadores[index].preparado==false){
+				estanPreparados=false;
+			}
+		}
+		if(estanPreparados){
+			this.partidas[idp].fase=new Jugando();
+		}
+	}
 }
 
 function Partida(nombre,idp){
@@ -104,6 +120,7 @@ function Final(){
 
 function Usuario(nick){
 	this.nick=nick;
+	this.preparado=false;
 }
 
 module.exports.Juego=Juego;

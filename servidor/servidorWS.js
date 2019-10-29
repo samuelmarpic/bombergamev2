@@ -25,10 +25,17 @@ function ServidorWS(){
                     cli.enviarATodosMenosRemitente(socket,nombrePartida,"nuevoJugador",partida.jugadores);
                 });
             });
-            socket.on('salir', function(nick,idp){
-                juego.salir(idp,nick);
-                cli.enviarRemitente(socket,"fueraDePartida",idp);
-                cli.enviarATodosMenosRemitente(socket,idp,"nuevoJugador",);
+    		socket.on("salir",function(idp,nick){
+    			var partida=juego.salir(idp,nick);                
+    			cli.enviarRemitente(socket,"saliste");
+                if (partida!=undefined){
+        			cli.enviarATodosMenosRemitente(socket,idp,"saleJugador",partida.jugadores);
+                }
+            });
+            socket.on("preparado", function(idp,nick){
+                var partida=juego.partidas[idp];
+                juego.prepararJugador(idp,nick);
+                cli.enviarRemitente(socket,"estasPreparado", partida);
             })
         });
     }

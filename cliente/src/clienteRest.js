@@ -4,6 +4,7 @@ function ClienteRest(){
 		$.getJSON("/agregarUsuario/"+nick,function(data){    
     		console.log(data);
     		if (data.nick!=""){
+				$.cookie("usr",data);
 	    		mostrarUsuario(data);
 	    	}
 	    	else{

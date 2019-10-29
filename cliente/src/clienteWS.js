@@ -15,6 +15,12 @@ function ClienteWS(nick){
         this.socket.emit('unirAPartida', this.nick,nombrePartida);
         console.log("usuario "+this.nick+ " unido a partida "+ nombrePartida)
     }
+    this.salir=function(){
+		this.socket.emit("salir",this.idp,this.nick);
+    }
+    this.preparado=function(){
+        this.socket.emit("preparado",this.idp,this.nick);
+    }
     this.lanzarSocketSrv=function(){
         var cli=this;
         this.socket.on('connect', function(){                           
@@ -28,10 +34,21 @@ function ClienteWS(nick){
         });
         this.socket.on('unidoAPartida', function(partida){
             console.log('se ha unido a la partida', partida)
+            cli.idp=partida.idp;
             mostrarPartida(partida);
             mostrarListaJugadores(partida.jugadores);
         });
-        this.socket.on('nuevoJugador')
+        this.socket.on('nuevoJugador',function(jugadores){
+			mostrarListaJugadores(jugadores);
+		});
+        this.socket.on('saliste',function(){
+			mostrarCrearPartida(this.nick);
+		});
+		this.socket.on('saleJugador',function(jugadores){
+			mostrarListaJugadores(jugadores);
+        });
+        this.socket.on('estasPreparado',function(partida){
+            mostrarListaJugadores(partida.jugadores)
+        })
     }
-
 }
