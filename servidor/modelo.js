@@ -27,25 +27,43 @@ function Juego(){
 			callback({nick:""});
 		}
 	}
+	this.obtenerUsuario=function(nick,callback){
+		if (this.usuarios[nick]){
+			callback(this.usuarios[nick]);
+		}
+		else{
+			callback({nick:""});
+		}
+	}
 	this.obtenerUsuarios=function(callback){
 		callback(this.usuarios);
 	}
 	this.obtenerPartidas=function(callback){
 		callback(this.partidas);
 	}
-	this.unirAPartida=function(nombre,nick,callback){
+	this.obtenerPartidasInicial=function(callback){
+		partidas={};
+		for (var key in this.partidas){
+		  if (this.partidas[key].fase.nombre=="inicial"){
+		    partidas[key]=this.partidas[key];
+			}
+		}
+		callback(partidas);
+	}
+	this.unirAPartida=function(nombre,nick){
 		var partida={};
 		if (this.partidas[nombre] && this.usuarios[nick]){
 			this.partidas[nombre].agregarJugador(this.usuarios[nick]);
 			partida=this.partidas[nombre];
 		}
-		callback(partida);
+		return partida;
 	}
 	this.salir=function(idp,nick){
 		this.partidas[idp].salir(nick);
 		if (this.comprobarJugadores(idp)==0){
 			this.eliminarPartida(idp);
 		}
+		return this.partidas[idp];
 	}
 	this.comprobarJugadores=function(nombrePartida){
 		return Object.keys(this.partidas[nombrePartida].jugadores).length;
@@ -60,21 +78,13 @@ function Juego(){
 		}
 		callback(jugadores);
 	}
-	this.prepararJugador=function(idp,nick){
-		var jugadores=this.partidas[idp].jugadores;
-		jugadores[nick].preparado=true;
-		this.comprobarPreparados(idp);
-	}
-	this.comprobarPreparados=function(idp){
-		var estanPreparados=true;
-		for(var index in this.jugadores){
-			if(this.jugadores[index].preparado==false){
-				estanPreparados=false;
-			}
+	this.jugadorPreparado=function(idp,nick,callback){
+		var jugadores=[];
+		if (this.partidas[idp]){
+			this.partidas[idp].jugadorPreparado(nick);
+			jugadores=this.partidas[idp].jugadores;
 		}
-		if(estanPreparados){
-			this.partidas[idp].fase=new Jugando();
-		}
+		callback(jugadores);
 	}
 }
 
@@ -95,6 +105,18 @@ function Partida(nombre,idp){
 	this.salir=function(nick){
 		delete this.jugadores[nick];
 	}
+	this.jugadorPreparado=function(nick){
+		this.fase.jugadorPreparado(nick,this);
+	}
+	this.todosPreparados=function(){
+		res=true;
+		for (var key in this.jugadores){
+		  if (this.jugadores[key].estado=="no preparado"){
+		    res=false;
+			}
+		}
+		return res;
+	}
 }
 
 function Inicial(){
@@ -102,12 +124,21 @@ function Inicial(){
 	this.agregarJugador=function(usr,partida){
 		partida.puedeAgregarJugador(usr);
 	}
+	this.jugadorPreparado=function(nick,partida){
+		partida.jugadores[nick].estado="preparado";
+		if (partida.todosPreparados()){
+			partida.fase=new Jugando();
+		}
+	}
 }
 
 function Jugando(){
 	this.nombre="jugando";
 	this.agregarJugador=function(usr,partida){
 		console.log("El juego ya ha comenzado");
+	}
+	this.jugadorPreparado=function(nick,partida){
+		console.log("la partida ya ha comenzado");
 	}
 }
 
@@ -120,7 +151,7 @@ function Final(){
 
 function Usuario(nick){
 	this.nick=nick;
-	this.preparado=false;
+	this.estado="no preparado";
 }
 
 module.exports.Juego=Juego;

@@ -4,7 +4,7 @@ function ClienteRest(){
 		$.getJSON("/agregarUsuario/"+nick,function(data){    
     		console.log(data);
     		if (data.nick!=""){
-				$.cookie("usr",data);
+    			$.cookie("usr",JSON.stringify(data));
 	    		mostrarUsuario(data);
 	    	}
 	    	else{
@@ -12,8 +12,23 @@ function ClienteRest(){
 	    	}
 		});
 	}
-	this.crearPartida=function(nombrePartida,nick){
-		$.getJSON("/crearPartida/"+nombrePartida+"/"+nick,function(data){    
+	this.comprobarUsuario=function(){
+		var usr=JSON.parse($.cookie("usr"));
+		$.getJSON("/comprobarUsuario/"+usr.nick,function(data){
+			console.log(data);
+    		if (data.nick!=""){
+    			//$.cookie("usr",JSON.stringify(data));
+	    		mostrarUsuario(data);
+	    	}
+	    	else{
+	    		$.removeCookie("usr");
+				mostrarAgregarUsuario();	
+	    	}
+		});
+	}
+	this.crearPartida=function(nombrePartida){
+		var usr=JSON.parse($.cookie("usr"));
+		$.getJSON("/crearPartida/"+nombrePartida+"/"+usr.nick,function(data){    
     		console.log(data);
     		mostrarPartida(data);
 		});

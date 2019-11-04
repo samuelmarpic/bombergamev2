@@ -1,5 +1,15 @@
 
 var nick;
+
+function comprobarUsuario(){
+	if ($.cookie("usr")){
+		rest.comprobarUsuario();
+	}
+	else{
+		mostrarAgregarUsuario();
+	}
+}
+
 function mostrarAgregarUsuario(){
 	var cadena="<div id='mAU'>";
 	cadena=cadena+"<h3>Usuario</h3>";
@@ -31,6 +41,7 @@ function mostrarAviso(msg){
 }
 
 function mostrarCrearPartida(nick){
+	$('#mLP').remove();
 	$('#mP').remove();
 	var cadena="<div id='mCP'>";
 	cadena=cadena+"<h3>Bienvenido "+nick+"</h3>";
@@ -49,10 +60,11 @@ function mostrarCrearPartida(nick){
         	nombre="SinNombre";
         }
         //rest.crearPartida(nombre,nick);
-		ws.crearPartida(nombre);
-	});
+        ws.crearPartida(nombre);
+     });
 	$('#unirseAPartidaBtn').on('click',function(){
-        rest.obtenerPartidas();
+        //rest.obtenerPartidas();
+        ws.obtenerPartidas();
      });
 
 }
@@ -62,8 +74,8 @@ function mostrarPartida(data){
 	$('#mLP').remove();
 	var cadena="<div id='mP'>";
 	cadena=cadena+"<h3>Bienvenido a la partida: "+data.nombre+"</h3>";
-	cadena=cadena+'<p><button type="button" id="salirBtn" class="btn btn-primary btn-md" onclick="ws.salir()"">Salir</button></p></div>';
-	cadena=cadena+'<p><button type="button" id="preparadoBtn" class="btn btn-success btn-md" onclick="ws.preparado()"">Preparado</button></p></div>';
+	cadena=cadena+'<p><button type="button" id="preparadoBtn" class="btn btn-primary btn-md" onclick="ws.preparado()"">Preparado</button> ';	
+	cadena=cadena+' <button type="button" id="salirBtn" class="btn btn-primary btn-md" onclick="ws.salir()"">Salir</button></p></div>';
 	$('#inicio').append(cadena);
 }
 
@@ -76,15 +88,13 @@ function mostrarListaPartidas(data){
   	cadena=cadena+'<table class="table"><thead><tr>';
     cadena=cadena+'<th scope="col">Nombre</th><th scope="col">Número jugadores</th><th>Unirse</th>';
     cadena=cadena+'</tr></thead>';
-	cadena=cadena+'<tbody>';
+    cadena=cadena+'<tbody>';
   	for(var key in data){
-		  if(data[key].fase.nombre=="inicial"){
-			cadena=cadena+'<tr>'
-			cadena=cadena+'<td>'+data[key].nombre+'</td>';
-			cadena=cadena+'<td>'+Object.keys(data[key].jugadores).length+'</td>';
-		    cadena=cadena+'<td><button type="button" id="unirmeAPartidaBtn" class="btn btn-primary btn-md" onclick="ws.unirAPartida(\''+data[key].idp+'\',\''+nick+'\')">Unirse a partida</button></td>';
-		    cadena=cadena+'</tr>';
-		  }
+  		cadena=cadena+'<tr>'
+  		cadena=cadena+'<td>'+data[key].nombre+'</td>';
+  		cadena=cadena+'<td>'+Object.keys(data[key].jugadores).length+'</td>';
+ 		cadena=cadena+'<td><button type="button" id="unirmeAPartidaBtn" class="btn btn-primary btn-md" onclick="ws.unirAPartida(\''+data[key].idp+'\',\''+nick+'\')">Unirse a partida</button></td>';
+ 		cadena=cadena+'</tr>';
   	};
   	cadena=cadena+"</tbody></table></div>";
   	$('#inicio').append(cadena);
@@ -96,16 +106,15 @@ function mostrarListaJugadores(jugadores){
 	//var numeroPartidas=Object.keys(data).length;
 	var cadena="<div id='mLJ'>";
 	cadena=cadena+"<h3>Lista de jugadores</h3>";
-	//cadena=cadena+'<ul class="list-group">';
   	cadena=cadena+'<table class="table"><thead><tr>';
-    cadena=cadena+'<th scope="col">Nick</th><th scope="col">Vidas</th><th>Preparado</th>';
+    cadena=cadena+'<th scope="col">Nick</th><th scope="col">Vidas</th><th>Otros</th>';
     cadena=cadena+'</tr></thead>';
     cadena=cadena+'<tbody>';
   	for(var key in jugadores){
   		cadena=cadena+'<tr>'
   		cadena=cadena+'<td>'+jugadores[key].nick+'</td>';
   		cadena=cadena+'<td>-</td>';
- 		cadena=cadena+'<td>'+jugadores[key].preparado+'</td>';
+ 		cadena=cadena+'<td>'+jugadores[key].estado+'</td>';
  		cadena=cadena+'</tr>';
   	};
   	cadena=cadena+"</tbody></table></div>";
