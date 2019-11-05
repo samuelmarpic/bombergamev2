@@ -130,3 +130,14 @@ function mostrarListaJugadores(jugadores){
   	cadena=cadena+"</tbody></table></div>";
   	$('#mP').append(cadena);
 }
+
+function mostrarCanvas(){
+	var game = new Phaser.Game(240, 240, Phaser.CANVAS,'juego');
+	game.state.add("BootState", new Bomberman.BootState());
+	game.state.add("LoadingState", new Bomberman.LoadingState());
+	game.state.add("TiledState", new Bomberman.TiledState());
+	game.state.start("BootState", true, false, "assets/levels/level1.json", "TiledState");
+}
+function borrarCanvas(){
+	$('canvas').remove();
+}
