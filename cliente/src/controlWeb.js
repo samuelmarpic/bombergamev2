@@ -11,9 +11,12 @@ function comprobarUsuario(){
 }
 
 function mostrarAgregarUsuario(){
+	$('#mCP').remove();
+	$('#mLP').remove();
 	var cadena="<div id='mAU'>";
 	cadena=cadena+"<h3>Usuario</h3>";
-	cadena=cadena+'<input id="nombre" type="text" class="form-control" name="nombre" placeholder="Nombre usuario">';		
+	cadena=cadena+'<input id="nombre" type="text" class="form-control" name="nombre" placeholder="Nombre usuario">';
+	cadena=cadena+"<br></br>";		
 	cadena=cadena+'<button type="button" id="inicioBtn" class="btn btn-primary btn-md">Iniciar Usuario</button>';	
 	cadena=cadena+"</div>";
 
@@ -45,9 +48,13 @@ function mostrarCrearPartida(nick){
 	$('#mP').remove();
 	var cadena="<div id='mCP'>";
 	cadena=cadena+"<h3>Bienvenido "+nick+"</h3>";
+	cadena=cadena+"<br></br>";
+	cadena=cadena+'<button type="button" id="cerrarSesion" class="btn btn-primary btn-md">Cerrar Sesión</button>';
+	cadena=cadena+"<br></br>";
 	cadena=cadena+"<div class='row'><div class='col-sm-8'>";
 	cadena=cadena+"<h3>Crear Partida</h3>";
-	cadena=cadena+'<input id="nombrePartida" type="text" class="form-control" name="nombrePartida" placeholder="Nombre partida">';		
+	cadena=cadena+'<input id="nombrePartida" type="text" class="form-control" name="nombrePartida" placeholder="Nombre partida">';
+	cadena=cadena+"<br></br>";		
 	cadena=cadena+'<button type="button" id="crearPartidaBtn" class="btn btn-primary btn-md">Crear partida</button>';	
 	cadena=cadena+"</div><div class='col-sm-4'><h3>Unirse</h3>";
 	cadena=cadena+'<button type="button" id="unirseAPartidaBtn" class="btn btn-primary btn-md">Unirse a partida</button>';
@@ -67,6 +74,9 @@ function mostrarCrearPartida(nick){
         ws.obtenerPartidas();
      });
 
+	 $('#cerrarSesion').on('click', function(){
+		 rest.cerrarSesion();
+	 })
 }
 
 function mostrarPartida(data){

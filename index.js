@@ -68,6 +68,12 @@ app.get("/obtenerJugadores/:nombrePartida",function(request,response){
 		response.send(jugadores);
 	})
 });
+app.get("/cerrarSesion/:nick",function(request,response){
+	var nick=request.params.nick;
+	juego.cerrarSesion(nick,function(usuarios){
+		response.send(usuarios);
+	});
+});
 
 //console.log("Servidor escuchando en "+host+":"+port);
 //app.listen(port,host);

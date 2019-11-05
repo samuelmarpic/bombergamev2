@@ -86,6 +86,12 @@ function Juego(){
 		}
 		callback(jugadores);
 	}
+	this.cerrarSesion=function(nick, callback){
+		if(this.usuarios[nick]){
+			delete this.usuarios[nick];
+		}
+		callback (this.usuarios)
+	}
 }
 
 function Partida(nombre,idp){

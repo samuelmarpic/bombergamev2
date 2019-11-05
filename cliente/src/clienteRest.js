@@ -50,4 +50,12 @@ function ClienteRest(){
 			console.log(data);
 		})
 	}
+	this.cerrarSesion=function(){
+		var usr = JSON.parse($.cookie("usr"));
+		console.log('clienterest funciona');
+		$.getJSON("/cerrarSesion/"+usr.nick,function(data){
+			$.removeCookie("usr");
+			mostrarAgregarUsuario();
+		});
+	}
 }
